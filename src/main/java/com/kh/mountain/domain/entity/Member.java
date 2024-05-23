@@ -1,4 +1,4 @@
-package com.kh.mountain.entity;
+package com.kh.mountain.domain.entity;
 
 import lombok.Data;
 
