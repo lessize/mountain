@@ -13,4 +13,10 @@ public interface MemberDAO {
 
   // 회원 조회
   Optional<Member> findByEmailPw(String id, String pw);
+
+  // 프로필 조회
+  Optional<Member> findById(String id);
+
+  // 프로필 수정
+  public int updateById(String id, Member member);
 }

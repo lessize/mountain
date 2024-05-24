@@ -11,10 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -42,12 +40,13 @@ public class MemberController {
     BeanUtils.copyProperties(joinForm, member);
     Long memberId = memberSVC.insertMember(member);
 
-    return "";
+    return memberId != null ? "redirect:/members/login" : "redirect:/";
   }
 
   // 로그인 페이지
   @GetMapping("/login")
-  public String loginForm() {
+  public String loginForm(Model model) {
+    model.addAttribute("loginForm", new LoginForm());
     return "member/login";
   }
 
@@ -56,23 +55,69 @@ public class MemberController {
   public String login(LoginForm loginForm, HttpServletRequest request,
                       @RequestParam(value = "redirectUrl",required = false) String redirectUrl){
 
-    if (memberSVC.existId(loginForm.getId())) {
+    log.info("loginForm={}", loginForm);
 
+    if (memberSVC.existId(loginForm.getId())) {
       Optional<Member> optionalMember = memberSVC.findByEmailPw(loginForm.getId(), loginForm.getPw());
-      //3) 회원인경우 회원 정보를 세션에 저장
+
       if (optionalMember.isPresent()) {
-        //세션 생성  : 세션정보가 있으면 있는 세션정보를 없으면 새로이 생성 getSession(true)
         HttpSession session = request.getSession(true);
-        //회원 정보를 세션에 저장
         Member member = optionalMember.get();
+
         LoginMember loginMember = new LoginMember(
-//                member.getMemberId(),
-//                member.getId(),
-//                member.getGubun()
+                member.getMemberId(),
+                member.getId(),
+                member.getPw(),
+                member.getTel(),
+                member.getNickname(),
+                member.getGender(),
+                member.getMexp(),
+                member.getLoc(),
+                member.getGubun(),
+                member.getCode()
         );
         session.setAttribute("loginMember", loginMember);
+        log.info("loginMember={}", loginMember);
+
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+          return "redirect:" + redirectUrl;
+        }
+        return "redirect:/index"; // 로그인 성공 시 인덱스 페이지로 이동
+      } else {
+        log.info("Invalid password for id={}", loginForm.getId());
+        return "redirect:/members/login?error=true"; // 로그인 실패 시 로그인 페이지로 이동
       }
+    } else {
+      log.info("Id not found: {}", loginForm.getId());
+      return "redirect:/members/login?error=true"; // 로그인 실패 시 로그인 페이지로 이동
     }
-    return "";
+  }
+
+  @ResponseBody
+  @PostMapping("/logout")
+  public String logout(HttpServletRequest request) {
+    String flag = "NOK";
+
+    HttpSession session = request.getSession(false);
+
+    if (session != null) {
+      session.invalidate();
+      flag = "OK";
+    }
+    return flag;
+  }
+
+  // 프로필 조회
+  @GetMapping("/profile")
+  public String profile(@RequestParam("id") String id, Model model) {
+    Optional<Member> memberOptional = memberSVC.findById(id);
+    if (memberOptional.isPresent()) {
+      Member member = memberOptional.get();
+      model.addAttribute("member", member);
+      return "member/profile";
+    } else {
+      // 멤버가 존재하지 않는 경우 처리
+      return "error"; // 예를 들어, 오류 페이지로 리다이렉트 또는 오류 메시지 표시
+    }
   }
 }

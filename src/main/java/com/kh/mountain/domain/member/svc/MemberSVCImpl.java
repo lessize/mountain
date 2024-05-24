@@ -31,4 +31,10 @@ public class MemberSVCImpl implements MemberSVC{
   public Optional<Member> findByEmailPw(String id, String pw) {
     return memberDAO.findByEmailPw(id, pw);
   }
+
+  // 프로필 조회
+  @Override
+  public Optional<Member> findById(String id) {
+    return memberDAO.findById(id);
+  }
 }

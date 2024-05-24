@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thhymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>$Title$</title>
+  <title>로그인</title>
 </head>
 <body>
-  <h3>로그인</h3>
-  <form action="" method="POST">
-    <p><input type="text" name="email" placeholder="이메일"></p>
-    <p><input type="password" name="passwd" placeholder="비밀번호"></p>
-    <p>
-      <button>로그인</button>
-    </p>
-  </form>
+<h3>로그인</h3>
+<form th:action="@{/members/login}" method="post" th:object="${loginForm}">
+  <p><input type="text" th:field="*{id}" placeholder="아이디"></p>
+  <p><input type="password" th:field="*{pw}" placeholder="비밀번호"></p>
+  <p>
+    <button type="submit">로그인</button>
+  </p>
+  <p th:if="${param.error}">
+    <span style="color: red;">로그인 실패: 아이디 또는 비밀번호를 확인하세요.</span>
+  </p>
+</form>
 </body>
 </html>

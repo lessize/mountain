@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -72,5 +73,45 @@ public class MemberDAOImpl implements MemberDAO {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  // 프로필 조회
+  @Override
+  public Optional<Member> findById(String id) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select id, pw, tel, nickname, gender, mexp, loc, code " );
+    sql.append("  from member " );
+    sql.append(" where id = :id " );
+
+    try {
+      Map<String, Object> map = Map.of("id", id);
+      Member member = template.queryForObject(sql.toString(), map, BeanPropertyRowMapper.newInstance(Member.class));
+      return Optional.of(member);
+    }catch (EmptyResultDataAccessException e){
+      // 조회결과가 없는 경우
+      return Optional.empty();
+    }
+  }
+
+  // 프로필 수정
+  @Override
+  public int updateById(String id, Member member) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("update member ");
+    sql.append("   set tel = :tel, ");
+    sql.append("       nickname = :nickname, ");
+    sql.append("       mexp = :mexp, ");
+    sql.append("       loc = :loc ");
+    sql.append("where id = :id ");
+
+    SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", id)
+            .addValue("tel", member.getTel())
+            .addValue("nickname", member.getNickname())
+            .addValue("mexp", member.getMexp())
+            .addValue("loc", member.getLoc());
+    int updateProfile = template.update(sql.toString(), param);
+
+    return updateProfile;
   }
 }

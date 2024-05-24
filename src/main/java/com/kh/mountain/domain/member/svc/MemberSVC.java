@@ -13,4 +13,7 @@ public interface MemberSVC {
 
   // 회원 조회
   Optional<Member> findByEmailPw(String id, String pw);
+
+  // 프로필 조회
+  Optional<Member> findById(String id);
 }
