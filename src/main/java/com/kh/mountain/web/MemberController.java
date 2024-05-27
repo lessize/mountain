@@ -124,7 +124,6 @@ public class MemberController {
       }
     } else {
       // 로그인되지 않은 사용자 처리
-      // 예: 로그인 페이지로 리다이렉트 또는 오류 페이지 표시
       return "redirect:/members/login"; // 로그인 페이지로 리다이렉트
     }
 

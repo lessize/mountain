@@ -24,7 +24,7 @@ import java.util.UUID;
 public class UploadFileDAOImpl implements UploadFileDAO {
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
-  private final String uploadDir = "src\\main\\resources\\static\\images";
+  private final String uploadDir = "src\\main\\resources\\static\\profile-images";
 
   @Autowired
   private final HttpServletRequest request;

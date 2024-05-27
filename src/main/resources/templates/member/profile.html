@@ -20,8 +20,7 @@
           <label for="profile-image">프로필 사진</label>
           <!-- 이미지 미리보기를 위한 img 태그 추가 -->
           <br>
-          <img th:if="${memberProfile.profileImageUrl}" th:src="@{/profile-images/{filename}(filename=${memberProfile.profileImageUrl})}" alt="프로필 사진">
-
+          <img th:if="${memberProfile.profileImageUrl}" th:src="@{|${profile.image-url-prefix}${memberProfile.profileImageUrl}|}" alt="프로필 사진">
           <br>
           <input id="profile-image" name="file" type="file" accept="image/*">
         </li>

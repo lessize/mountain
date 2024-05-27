@@ -112,7 +112,7 @@ public class MemberDAOImpl implements MemberDAO {
         profile.setMember(member);
         String storeFilename = rs.getString("store_filename");
         if (storeFilename != null) {
-          profile.setProfileImageUrl(imageUrlPrefix + storeFilename);
+          profile.setProfileImageUrl(storeFilename);
         }
         return profile;
       });
