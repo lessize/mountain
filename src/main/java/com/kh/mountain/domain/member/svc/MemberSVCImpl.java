@@ -2,6 +2,7 @@ package com.kh.mountain.domain.member.svc;
 
 import com.kh.mountain.domain.member.dao.MemberDAO;
 import com.kh.mountain.domain.entity.Member;
+import com.kh.mountain.web.form.MemberProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class MemberSVCImpl implements MemberSVC{
 
   // 프로필 조회
   @Override
-  public Optional<Member> findById(String id) {
+  public Optional<MemberProfile> findById(String id) {
     return memberDAO.findById(id);
   }
 }

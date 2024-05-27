@@ -1,7 +1,10 @@
 package com.kh.mountain.domain.entity;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 public class UploadFile {
   // 파일 아이디
   private Long UPLOADFILE_ID;       //	NUMBER(10,0)

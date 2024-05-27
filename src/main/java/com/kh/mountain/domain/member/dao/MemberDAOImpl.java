@@ -1,8 +1,11 @@
 package com.kh.mountain.domain.member.dao;
 
 import com.kh.mountain.domain.entity.Member;
+import com.kh.mountain.domain.uploadFile.svc.UploadFileSVC;
+import com.kh.mountain.web.form.MemberProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -24,6 +27,13 @@ import java.util.Optional;
 public class MemberDAOImpl implements MemberDAO {
 
   private final NamedParameterJdbcTemplate template;
+  private final UploadFileSVC uploadFileSVC;
+
+  @Value("${profile.image.defaultCode}")
+  private String profileImageDefaultCode;
+
+  @Value("${profile.image-url-prefix}")
+  private String imageUrlPrefix;
 
   // 회원 가입
   @Override
@@ -31,7 +41,7 @@ public class MemberDAOImpl implements MemberDAO {
     // sql
     StringBuffer sql = new StringBuffer();
     sql.append("insert into member (member_id, id, pw, tel, nickname, gender, mexp, loc) ");
-    sql.append("values (member_member_id_seq.nextval, :id, :pw, :tel, :nickname, :gender, :mexp, :loc) ");
+    sql.append("values (member_id_seq.nextval, :id, :pw, :tel, :nickname, :gender, :mexp, :loc) ");
 
     SqlParameterSource param = new BeanPropertySqlParameterSource(member);
     KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -77,21 +87,41 @@ public class MemberDAOImpl implements MemberDAO {
 
   // 프로필 조회
   @Override
-  public Optional<Member> findById(String id) {
+  public Optional<MemberProfile> findById(String id) {
     StringBuffer sql = new StringBuffer();
-    sql.append("select id, pw, tel, nickname, gender, mexp, loc, code " );
-    sql.append("  from member " );
-    sql.append(" where id = :id " );
+    sql.append("SELECT m.id, m.pw, m.tel, m.nickname, m.gender, m.mexp, m.loc, m.code, uf.store_filename ");
+    sql.append("  FROM member m ");
+    sql.append("  LEFT JOIN uploadfile uf ON m.id = uf.rid ");
+    sql.append("   AND uf.code = :profileImageCode ");
+    sql.append(" WHERE m.id = :id");
 
     try {
-      Map<String, Object> map = Map.of("id", id);
-      Member member = template.queryForObject(sql.toString(), map, BeanPropertyRowMapper.newInstance(Member.class));
-      return Optional.of(member);
-    }catch (EmptyResultDataAccessException e){
-      // 조회결과가 없는 경우
+      Map<String, Object> params = Map.of("id", id, "profileImageCode", profileImageDefaultCode);
+      MemberProfile memberProfile = template.queryForObject(sql.toString(), params, (rs, rowNum) -> {
+        Member member = new Member();
+        member.setId(rs.getString("id"));
+        member.setPw(rs.getString("pw"));
+        member.setTel(rs.getString("tel"));
+        member.setNickname(rs.getString("nickname"));
+        member.setGender(rs.getString("gender"));
+        member.setMexp(rs.getInt("mexp"));
+        member.setLoc(rs.getString("loc"));
+        member.setCode(rs.getString("code"));
+
+        MemberProfile profile = new MemberProfile();
+        profile.setMember(member);
+        String storeFilename = rs.getString("store_filename");
+        if (storeFilename != null) {
+          profile.setProfileImageUrl(imageUrlPrefix + storeFilename);
+        }
+        return profile;
+      });
+      return Optional.of(memberProfile);
+    } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
   }
+
 
   // 프로필 수정
   @Override
@@ -102,7 +132,7 @@ public class MemberDAOImpl implements MemberDAO {
     sql.append("       nickname = :nickname, ");
     sql.append("       mexp = :mexp, ");
     sql.append("       loc = :loc ");
-    sql.append("where id = :id ");
+    sql.append(" where id = :id ");
 
     SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", id)

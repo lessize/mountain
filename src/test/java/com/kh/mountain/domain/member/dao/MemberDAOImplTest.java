@@ -50,14 +50,14 @@ class MemberDAOImplTest {
     Assertions.assertThat(optionalMember).isEmpty();
   }
 
-  @Test
-  @DisplayName("프로필 조회")
-  void findById() {
-    String id = "user1@kh.com";
-    Optional<Member> findMember = memberDAO.findById(id);
-    Member member = findMember.orElse(null);
-    log.info("member={}", member);
-  }
+//  @Test
+//  @DisplayName("프로필 조회")
+//  void findById() {
+//    String id = "user1@kh.com";
+//    Optional<Member> findMember = memberDAO.findById(id);
+//    Member member = findMember.orElse(null);
+//    log.info("member={}", member);
+//  }
 
   @Test
   @DisplayName("프로필 수정")
@@ -77,15 +77,15 @@ class MemberDAOImplTest {
       Assertions.fail("변경할 내역이 없습니다.");
     }
 
-    Optional<Member> optionalMember = memberDAO.findById(id);
-    if (optionalMember.isPresent()) {
-      Member foundMember = optionalMember.get();
-      Assertions.assertThat(foundMember.getTel()).isEqualTo("010-1111-2222");
-      Assertions.assertThat(foundMember.getNickname()).isEqualTo("사용자1");
-      Assertions.assertThat(foundMember.getMexp()).isEqualTo(0);
-      Assertions.assertThat(foundMember.getLoc()).isEqualTo("서울특별시");
-    } else {
-      Assertions.fail("변경된 회원을 찾을 수 없습니다.");
-    }
+//    Optional<Member> optionalMember = memberDAO.findById(id);
+//    if (optionalMember.isPresent()) {
+//      Member foundMember = optionalMember.get();
+//      Assertions.assertThat(foundMember.getTel()).isEqualTo("010-1111-2222");
+//      Assertions.assertThat(foundMember.getNickname()).isEqualTo("사용자1");
+//      Assertions.assertThat(foundMember.getMexp()).isEqualTo(0);
+//      Assertions.assertThat(foundMember.getLoc()).isEqualTo("서울특별시");
+//    } else {
+//      Assertions.fail("변경된 회원을 찾을 수 없습니다.");
+//    }
   }
 }

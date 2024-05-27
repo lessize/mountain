@@ -49,9 +49,11 @@
       </li>
       <li>
         <div>
-          <label for="">성별</label>
-          <input type="radio" name="gender" id="male" value="남자">남자
-          <input type="radio" name="gender" id="female" value="여자">여자
+          <label>성별</label>
+          <input type="radio" name="gender" id="male" value="남자">
+          <label for="male">남자</label>
+          <input type="radio" name="gender" id="female" value="여자">
+          <label for="female">여자</label>
         </div>
       </li>
       <li>
@@ -119,26 +121,26 @@
 
     console.log(partialData);
 
-<!--    // Fetch API를 사용하여 AJAX 요청 보내기-->
-<!--    fetch('/members/join', {-->
-<!--      method: 'POST',-->
-<!--      headers: {-->
-<!--        'Content-Type': 'application/json'-->
-<!--      },-->
-<!--      body: JSON.stringify(partialData)-->
-<!--    })-->
-<!--    .then(response => {-->
-<!--      if (response.ok) {-->
-<!--        // 회원가입 성공시 로그인 페이지로 리디렉션-->
-<!--        window.location.href = '/members/login';-->
-<!--      } else {-->
-<!--        // 회원가입 실패시 메인 페이지로 리디렉션-->
-<!--        window.location.href = '/';-->
-<!--      }-->
-<!--    })-->
-<!--    .catch(error => {-->
-<!--      console.error('Error:', error);-->
-<!--    });-->
+    // Fetch API를 사용하여 AJAX 요청 보내기
+    fetch('/members/join', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(partialData)
+    })
+    .then(response => {
+      if (response.ok) {
+        // 회원가입 성공시 로그인 페이지로 리디렉션
+        window.location.href = '/members/login';
+      } else {
+        // 회원가입 실패시 메인 페이지로 리디렉션
+        window.location.href = '/';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   });
 </script>
 </body>

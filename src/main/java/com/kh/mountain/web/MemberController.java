@@ -5,6 +5,7 @@ import com.kh.mountain.domain.member.svc.MemberSVC;
 import com.kh.mountain.web.form.JoinForm;
 import com.kh.mountain.web.form.LoginForm;
 import com.kh.mountain.web.form.LoginMember;
+import com.kh.mountain.web.form.MemberProfile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class MemberController {
   // 로그인
   @PostMapping("/login")
   public String login(LoginForm loginForm, HttpServletRequest request,
-                      @RequestParam(value = "redirectUrl",required = false) String redirectUrl){
+                      @RequestParam(value = "redirectUrl", required = false) String redirectUrl) {
 
     log.info("loginForm={}", loginForm);
 
@@ -79,20 +80,21 @@ public class MemberController {
         session.setAttribute("loginMember", loginMember);
         log.info("loginMember={}", loginMember);
 
+        // 로그인 성공 시 리다이렉트
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
           return "redirect:" + redirectUrl;
+        } else {
+          return "redirect:/"; // 리다이렉트로 변경
         }
-        return "redirect:/index"; // 로그인 성공 시 인덱스 페이지로 이동
-      } else {
-        log.info("Invalid password for id={}", loginForm.getId());
-        return "redirect:/members/login?error=true"; // 로그인 실패 시 로그인 페이지로 이동
       }
-    } else {
-      log.info("Id not found: {}", loginForm.getId());
-      return "redirect:/members/login?error=true"; // 로그인 실패 시 로그인 페이지로 이동
     }
+
+    // 로그인 실패 시 로그인 페이지로 리다이렉트
+    return "redirect:/login"; // 리다이렉트로 변경
   }
 
+
+  // 로그아웃
   @ResponseBody
   @PostMapping("/logout")
   public String logout(HttpServletRequest request) {
@@ -109,15 +111,23 @@ public class MemberController {
 
   // 프로필 조회
   @GetMapping("/profile")
-  public String profile(@RequestParam("id") String id, Model model) {
-    Optional<Member> memberOptional = memberSVC.findById(id);
-    if (memberOptional.isPresent()) {
-      Member member = memberOptional.get();
-      model.addAttribute("member", member);
-      return "member/profile";
+  public String viewProfile(HttpServletRequest request, Model model) {
+    LoginMember loginMember = (LoginMember) request.getSession().getAttribute("loginMember");
+    if (loginMember != null) {
+      Optional<MemberProfile> memberProfileOpt = memberSVC.findById(loginMember.getId());
+      if (memberProfileOpt.isPresent()) {
+        MemberProfile memberProfile = memberProfileOpt.get();
+        model.addAttribute("memberProfile", memberProfile);
+      } else {
+        // 프로필이 없는 경우 처리
+        model.addAttribute("memberProfile", null);
+      }
     } else {
-      // 멤버가 존재하지 않는 경우 처리
-      return "error"; // 예를 들어, 오류 페이지로 리다이렉트 또는 오류 메시지 표시
+      // 로그인되지 않은 사용자 처리
+      // 예: 로그인 페이지로 리다이렉트 또는 오류 페이지 표시
+      return "redirect:/members/login"; // 로그인 페이지로 리다이렉트
     }
+
+    return "member/profile";
   }
 }

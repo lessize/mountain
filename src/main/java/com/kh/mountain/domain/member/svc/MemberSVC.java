@@ -1,6 +1,7 @@
 package com.kh.mountain.domain.member.svc;
 
 import com.kh.mountain.domain.entity.Member;
+import com.kh.mountain.web.form.MemberProfile;
 
 import java.util.Optional;
 
@@ -15,5 +16,5 @@ public interface MemberSVC {
   Optional<Member> findByEmailPw(String id, String pw);
 
   // 프로필 조회
-  Optional<Member> findById(String id);
+  Optional<MemberProfile> findById(String id);
 }
