@@ -8,5 +8,5 @@ public interface UploadFileDAO {
 
   public String saveProfileImage(MultipartFile file) throws IOException;
 
-  void deleteExistingProfileImage(String id);
+//  void deleteExistingProfileImage(String id);
 }

@@ -24,7 +24,7 @@ import java.util.UUID;
 public class UploadFileDAOImpl implements UploadFileDAO {
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
-  private final String uploadDir = "src\\main\\resources\\static\\profile-images";
+  private final String uploadDir = "src\\main\\resources\\static\\images";
 
   @Autowired
   private final HttpServletRequest request;
@@ -49,7 +49,7 @@ public class UploadFileDAOImpl implements UploadFileDAO {
     String id = loginMember.getId();
 
     // 기존에 저장된 프로필 사진 삭제 (단일 파일 관리를 위한 방법)
-    deleteExistingProfileImage(id);
+//    deleteExistingProfileImage(id);
 
     // 파일명 생성 (UUID 활용)
     String originalFilename = file.getOriginalFilename();
@@ -81,7 +81,29 @@ public class UploadFileDAOImpl implements UploadFileDAO {
     return storeFilename;
   }
 
-  public void deleteExistingProfileImage(String id) {
-    // 기존에 저장된 프로필 사진을 삭제하는 로직 추가
-  }
+  // 사진 변경 시 기존에 저장된 사진 삭제
+//  public void deleteExistingProfileImage(String id) {
+//    // 기존에 저장된 프로필 사진 정보를 조회하는 SQL
+//    String selectSql = "SELECT STORE_FILENAME FROM UploadFile WHERE RID = :rid AND CODE = :code";
+//    MapSqlParameterSource params = new MapSqlParameterSource();
+//    params.addValue("rid", id);
+//    params.addValue("code", profileImageDefaultCode);
+//
+//    // 기존 파일명을 조회
+//    String storeFilename = jdbcTemplate.queryForObject(selectSql, params, String.class);
+//
+//    if (storeFilename != null) {
+//      try {
+//        // 파일 시스템에서 파일 삭제
+//        Path filePath = Paths.get(uploadDir, storeFilename);
+//        Files.deleteIfExists(filePath);
+//
+//        // 데이터베이스에서 파일 정보 삭제
+//        String deleteSql = "DELETE FROM UploadFile WHERE RID = :rid AND CODE = :code";
+//        jdbcTemplate.update(deleteSql, params);
+//      } catch (IOException e) {
+//        log.error("Error deleting file: " + storeFilename, e);
+//      }
+//    }
+//  }
 }

@@ -31,7 +31,7 @@ public class UploadFileController {
     String storeFilename = uploadFileSVC.saveProfileImage(file);
 
     // 프로필 사진 URL 설정
-    String profileImageUrl = imageUrlPrefix + storeFilename;
+    String profileImageUrl = storeFilename;
     model.addAttribute("profileImageUrl", profileImageUrl);
 
     log.info(profileImageUrl);

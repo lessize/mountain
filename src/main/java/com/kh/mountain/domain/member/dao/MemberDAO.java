@@ -20,4 +20,13 @@ public interface MemberDAO {
 
   // 프로필 수정
   public int updateById(String id, Member member);
+
+  // 아이디 찾기
+  Optional<Member> findByNicknameTel(String nickname, String tel);
+
+  //비밀번호 유무확인
+  boolean hasPasswd(String id, String nickname);
+
+  //비밀번호 변경
+  int changePw(String id, String pw);
 }

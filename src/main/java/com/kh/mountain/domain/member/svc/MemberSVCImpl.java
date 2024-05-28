@@ -38,4 +38,22 @@ public class MemberSVCImpl implements MemberSVC{
   public Optional<MemberProfile> findById(String id) {
     return memberDAO.findById(id);
   }
+
+  // 아이디 찾기
+  @Override
+  public Optional<Member> findByNicknameTel(String nickname, String tel) {
+    return memberDAO.findByNicknameTel(nickname, tel);
+  }
+
+  // 비번 유무
+  @Override
+  public boolean hasPasswd(String id, String nickname) {
+    return memberDAO.hasPasswd(id, nickname);
+  }
+
+  // 비번 변경
+  @Override
+  public int changePw(String id, String pw) {
+    return memberDAO.changePw(id, pw);
+  }
 }

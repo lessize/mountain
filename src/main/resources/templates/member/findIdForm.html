@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아이디 찾기</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h3>아이디 찾기</h3>
+<form id="findIdForm">
+  <p><input type="text" name="nickname" placeholder="닉네임 입력" required></p>
+  <p><input type="text" name="tel" placeholder="전화번호 입력('-' 포함)" required></p>
+  <p>
+    <button type="submit">제출</button>
+  </p>
+  <p>
+    <span>아이디 : </span><span class="your_id"></span>
+  </p>
+</form>
+
+<script>
+  $(document).ready(function() {
+    $('#findIdForm').on('submit', function(event) {
+      event.preventDefault(); // 폼의 기본 제출 동작을 막음
+
+      var formData = {
+        nickname: $('input[name="nickname"]').val(),
+        tel: $('input[name="tel"]').val()
+      };
+
+      $.ajax({
+        type: 'POST',
+        url: '/members/findId',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response) {
+          if (response.status === 'success') {
+            $('.your_id').text(response.id);
+          } else {
+            alert(response.message);
+          }
+        },
+        error: function() {
+          alert('An error occurred while processing your request.');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

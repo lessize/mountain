@@ -144,4 +144,53 @@ public class MemberDAOImpl implements MemberDAO {
 
     return updateProfile;
   }
+
+  // 아이디 찾기
+  @Override
+  public Optional<Member> findByNicknameTel(String nickname, String tel) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select id" );
+    sql.append("  from member" );
+    sql.append(" where nickname = :nickname" );
+    sql.append("   and tel = :tel" );
+
+    Map param = Map.of("nickname", nickname, "tel", tel);
+    try {
+      Member member = template.queryForObject(sql.toString(), param, new BeanPropertyRowMapper<>(Member.class));
+      return Optional.of(member);
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
+  }
+
+
+  //비밀번호 유무
+  @Override
+  public boolean hasPasswd(String id, String nickname) {
+    StringBuffer sql = new StringBuffer();
+
+    sql.append("select count(*) ");
+    sql.append("  from member ");
+    sql.append(" where id = :id ");
+    sql.append("   and nickname = :nickname ");
+
+    Map<String, String> param = Map.of("id", id, "nickname",nickname);
+    Integer cnt = template.queryForObject(sql.toString(), param, Integer.class);
+
+    return cnt == 1 ? true : false;
+  }
+
+  //비밀번호 변경
+  @Override
+  public int changePw(String id, String pw) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("update member ");
+    sql.append("   set pw = :pw ");
+    sql.append(" where id  = :id ");
+
+    Map<String, String> param = Map.of("pw", pw, "id", id);
+    int updateRow = template.update(sql.toString(), param);
+
+    return updateRow;
+  }
 }
