@@ -11,9 +11,9 @@
       ~{},              <!--/* style */-->
       ~{},              <!--/* script */-->
       <!--/*--------------------------*/-->
-      ~{::.topmenu},    <!--/* upm */-->
-      ~{::.head },      <!--/* header */-->
-      ~{::.gnb},         <!--/* gnb */-->
+      ~{::.top},      <!--/* header */-->
+      ~{::.navi},         <!--/* gnb */-->
+      ~{::.search},  <!--/* searchMenu */-->
       ~{::main},        <!--/* main */-->
       ~{::.foot},       <!--/* footer default*/-->
       )}">
@@ -24,26 +24,20 @@
   <title>제목 채우기</title>
 </head>
 <body>
-<div class="wrap">
-  <div id="tl"></div>
-  <header id="tc">
-<!--    <header class="topmenu" th:insert="~{fragment/top::beforeLoginTop}"/>-->
-<!--    </header>-->
-  <div id="tr"></div>
-  <div id="banner">
-<!--    <header class="head" th:insert="~{fragment/banner::global}"/>-->
+  <div class="wrap">
+    <div class="top" th:insert="~{fragment/header::beforeLoginHeader}"/>
+    </div>
+    <div class="navi" th:insert="~{fragment/gnb::gnb}">
+    </div>
+    <div class="search" th:insert="~{fragment/searchMenu::searchMenu}">
+    </div>
+    <div id="content">
+      <main>
+        본문 채우기
+      </main>
+    </div>
+    <div id="foot" th:insert="~{fragment/footer::footer}">
+    </div>
   </div>
-  <div id="gnb">
-<!--    <nav class="gnb" th:insert="~{fragment/menu::global}"/>-->
-  </div>
-  <div id="content">
-    <main class="main">
-      본문 채우기
-    </main>
-  </div>
-  <div id="foot">
-    <footer class="foot" th:insert="~{fragment/footer::footer}"/>
-  </div>
-</div>
 </body>
 </html>
