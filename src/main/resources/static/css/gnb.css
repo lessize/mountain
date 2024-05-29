@@ -161,6 +161,12 @@ nav .nav_box .deco {
   background-color: var(--color-green);
 }
 
+nav .nav_box .deco .fa-ellipsis {
+  background-color: var(--color-green);
+  color: var(--color-white);
+  font-size: 40px;
+}
+
 nav .nav_box .nav_list {
   display: grid;
   grid-template-columns: 80px 1fr 80px;
@@ -174,7 +180,19 @@ nav .nav_box .nav_list div {
 }
 
 nav .nav_box .nav_list h3 {
+  position: relative;
   background-color: var(--color-green);
+}
+
+
+nav .nav_box .nav_list h3 img {
+  position: absolute;
+  top: 50%;
+  right: -50%;
+  background-color: var(--color-green);
+  transform: rotate(90deg);
+  width: 200px;
+  text-align: center;
 }
 
 nav .nav_box .nav_list .menu_list {

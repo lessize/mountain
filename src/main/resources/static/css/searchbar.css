@@ -80,7 +80,12 @@ aside#search_menu .search_wrap .box_cont .region_box {
   width: 1076px;
   height: 450px;
   padding: 40px 0;
-  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+
+aside#search_menu .search_wrap .box_cont .region_box.show {
+  opacity: 1;
 }
 
 aside#search_menu .search_wrap .box_cont .region_box .region_list {

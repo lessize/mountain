@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html id="root"
+      lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="main(
+        title,          <!--/* title */-->
+        <!--/* external */-->
+        styles,
+        scripts,
+        <!--/* internal */-->
+        style,
+        script,
+        <!--/*--------------------------*/-->
+        main           <!--/* main */-->
+      )"
+
+      th:with="s_id=${session?.loginMember?.id},
+               s_nickname=${session?.loginMember?.nickname},
+               s_loc=${session?.loginMember?.loc},
+               s_gubun=${session?.loginMember?.gubun}"
+
+      th:data-s-id="${s_id}"
+      th:data-s-nickname="${s_nickname}"
+      th:data-s-loc="${s_loc}"
+      th:data-s-gubun="${s_gubun}">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--common style-->
+  <link rel="stylesheet" href="./css/common.css">
+  <link rel="icon" href="./img/fcon_96.png">
+  <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"/>
+
+  <th:block th:replace="${styles}"/>
+  <th:block th:replace="${scripts}"/>
+
+  <th:block th:replace="${style}"/>
+  <th:block th:replace="${script}"/>
+
+  <title th:replace=${title}>제목</title>
+</head>
+<body>
+<header>
+  <h1><a href="#"><img src="./img/logo_green.png" alt="H!KERS"></a></h1>
+  <ul class="header_list">
+    <li><a href="#">로그인</a></li>
+    <li><a href="#">회원가입</a></li>
+  </ul>
+</header>
+<div id="gnb">
+  <aside id="nav_btn">
+    <div class="btn_box">
+      <div class="webapp_cover">
+        <div class="menu_button">
+          <input type="checkbox" id="menu_checkbox">
+          <label for="menu_checkbox" id="menu_label">
+            <div id="menu_text_bar"></div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <nav>
+    <div class="nav_box">
+      <div class="deco"><i class="fa-solid fa-ellipsis"></i></div>
+      <div class="nav_list">
+        <div class="btn_box"></div>
+        <ul class="menu_list">
+          <li>
+            <h3><a href="#">내 프로필</a></h3>
+          </li>
+          <li>
+            <h3><a href="#">산길 정보</a></h3>
+          </li>
+          <li>
+            <h3><a href="#">산길 추천</a></h3>
+            <span></span>
+            <ul class="menu_sublist">
+              <li><a href="#">100대 명산</a></li>
+              <li><a href="#">오늘의 산 추천</a></li>
+              <li><a href="#">지금 인기 있는 산</a></li>
+            </ul>
+          </li>
+          <li>
+            <h3><a href="#">커뮤니티</a></h3>
+            <span></span>
+            <ul class="menu_sublist">
+              <li><a href="#">등산 일지</a></li>
+              <li><a href="#">동호회 모집</a></li>
+              <li><a href="#">문의하기</a></li>
+            </ul>
+          </li>
+        </ul>
+        <h3><img src="./img/logo_white.png" alt="H!KERS"></h3>
+      </div>
+      <div class="deco"><i class="fa-solid fa-ellipsis"></i></div>
+    </div>
+  </nav>
+</div>
+<aside id="search_menu">
+  <div class="menu-wrapper">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </div>
+  <div class="search_wrap">
+    <div class="box_cont">
+      <div class="search_box">
+        <div class="search_window">
+          <input type="text" placeholder="검색어를 입력하세요!"><span class="search_list_btn">지역으로 선택하기</span><i class="fa-solid fa-magnifying-glass search_btn"></i>
+        </div>
+      </div>
+      <div class="region_box">
+        <ul class="region_list">
+          <li><a href="#">서울</a></li>
+          <li><a href="#">부산</a></li>
+          <li><a href="#">대구</a></li>
+          <li><a href="#">인천</a></li>
+          <li><a href="#">광주</a></li>
+          <li><a href="#">대전</a></li>
+          <li><a href="#">울산</a></li>
+          <li><a href="#">세종</a></li>
+          <li><a href="#">경기</a></li>
+          <li><a href="#">충북</a></li>
+          <li><a href="#">충남</a></li>
+          <li><a href="#">강원</a></li>
+          <li><a href="#">경북</a></li>
+          <li><a href="#">경남</a></li>
+          <li><a href="#">전북</a></li>
+          <li><a href="#">전남</a></li>
+          <li><a href="#">제주</a></li>
+          <li><a href="#">내 지역</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</aside>
+<main th:insert="${main}">
+<!--    <section th:replace="${contentFragment}"></section>-->
+</main>
+<footer>
+  <h2><img src="./img/logo_gray.png" alt="H!KERS"></h2>
+  <address>주소 : 울산광역시 남구 삼산로35번길 19</address>
+  <div>Copyright 2024. H!KERS. All rights reserved.</div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+<script src="https://kit.fontawesome.com/c688b8b455.js" crossorigin="anonymous"></script>
+<script>
+  // 메뉴 버튼
+  document.addEventListener('DOMContentLoaded', function () {
+    var menuCheckbox = document.getElementById('menu_checkbox');
+    var navMenu = document.querySelector('nav');
+    var asideNav = document.getElementById('nav_btn');
+    var menuLabel = document.getElementById('menu_label');
+    var textBar = document.getElementById('menu_text_bar');
+    var searchMenu = document.getElementById('search_menu');
+
+    menuCheckbox.addEventListener('change', function() {
+      if(this.checked) {
+        navMenu.style.left = '0';
+        asideNav.style.transition = 'background-color 0.3s ease-in-out';
+        asideNav.style.backgroundColor = 'var(--color-green)';
+        menuLabel.style.transition = 'background-color 0.3s ease-in-out';
+        menuLabel.style.backgroundColor = 'var(--color-green)';
+        textBar.style.transition = 'background-color 0.3s ease-in-out';
+        textBar.style.backgroundColor = '#fff';
+        searchMenu.style.transition = 'opacity 0.6s ease-in-out';
+        searchMenu.style.opacity = 0;
+      } else {
+        navMenu.style.transition = 'left 0.6s ease-in-out';
+        navMenu.style.left = '-200%';
+        asideNav.style.transition = 'background-color 0.3s ease-in-out';
+        asideNav.style.backgroundColor = 'var(--color-beige)';
+        menuLabel.style.transition = 'background-color 0.3s ease-in-out';
+        menuLabel.style.backgroundColor = 'var(--color-beige)';
+        textBar.style.transition = 'background-color 0.3s ease-in-out';
+        textBar.style.backgroundColor = '#333';
+        searchMenu.style.opacity = 1;
+      }
+    });
+  });
+
+  // 산길 추천 메뉴
+  document.addEventListener("DOMContentLoaded", function() {
+    const boxes = document.querySelectorAll('#reco_sec ul li');
+
+    boxes.forEach(box => {
+      box.addEventListener('click', () => {
+        boxes.forEach(b => {
+          b.style.width = '200px';
+          const div = b.querySelector('div');
+          div.style.transform = 'translate(-50%, -50%) rotate(-0.25turn)';
+          div.style.bottom = '40%';
+          div.style.left = '70%';
+        });
+
+        box.style.width = '1000px';
+        const div = box.querySelector('div');
+        div.style.transform = 'translate(-50%, -50%) rotate(0)';
+        div.style.bottom = '0%';
+        div.style.left = '30%';
+      });
+    });
+  });
+
+  // 슬라이더
+  var splide = new Splide( '.splide', {
+    direction: 'ttb',
+    height   : '10rem',
+    wheel    : true,
+  } );
+
+  splide.mount();
+
+  // 검색창
+  document.addEventListener('DOMContentLoaded', function() {
+    const fglass = document.querySelector('.fa-magnifying-glass');
+    const searchWrap = document.querySelector('.search_wrap');
+
+    fglass.addEventListener('click', function() {
+      console.log('click!');
+      searchWrap.classList.toggle('show');
+
+       // 검색창이 보이는 동안 gnb 숨기기
+      if (searchWrap.classList.contains('show')) {
+        gnb.style.transition = 'opacity 0.6s ease-in-out';
+        gnb.style.opacity = 0;
+      } else {
+        gnb.style.opacity = 1;
+      }
+    });
+  });
+
+  // 지역 검색 메뉴 표시
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchList = document.querySelector('.search_list_btn');
+    const regionBox = document.querySelector('.region_box');
+
+    searchList.addEventListener('click', function() {
+      regionBox.classList.toggle('show');
+    });
+  });
+
+  // regionBox의 show 클래스 제거
+  document.addEventListener('DOMContentLoaded', function() {
+    var searchInput = document.querySelector('.search_window input');
+    var regionBox = document.querySelector('.region_box');
+
+    searchInput.addEventListener('click', function() {
+      regionBox.classList.remove('show');
+    });
+  });
+</script>
+</body>
+</html>

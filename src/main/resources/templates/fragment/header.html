@@ -1,0 +1,27 @@
+<th:block th:fragment="beforeLoginHeader">
+  <header>
+    <h1><a href="#">H!KERS</a></h1>
+    <ul class="header_list">
+      <li><a href="#">로그인</a></li>
+      <li><a href="#">회원가입</a></li>
+    </ul>
+  </header>
+</th:block>
+<th:block th:fragment="afterLoginHeader">
+  <header>
+    <h1><a href="#">H!KERS</a></h1>
+    <ul class="header_list">
+      <li><a th:href="@{/mypage}"><span th:text="${session?.loginMember.nickname}"></span></a></li>
+      <li><a href="#" id='logout'>로그아웃</a></li>
+    </ul>
+  </header>
+</th:block>
+<!--<th:block th:fragment="adminLoginHeader">-->
+<!--  <header>-->
+<!--    <h1><a href="#">H!KERS</a></h1>-->
+<!--    <ul class="header_list">-->
+<!--      <li><a th:href="@{/admin}"><span th:if="${session?.loginMember.gubun == 'M'}">관리자 메뉴</span></a></li>-->
+<!--      <li><a href="#" id='logout'>로그아웃</a></li>-->
+<!--    </ul>-->
+<!--  </header>-->
+<!--</th:block>-->

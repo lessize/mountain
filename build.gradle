@@ -43,6 +43,12 @@ dependencies {
 	//메일전송
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	//webclient
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// 타임리프 프래그먼트
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
 }
 
 tasks.named('test') {

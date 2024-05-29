@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragment/layout::main(
+      ~{::title},       <!--/* title */-->
+      <!--/*--------------------------*/-->
+      <!--/* external */-->
+      ~{},              <!--/* styles */-->
+      ~{},              <!--/* scripts */-->
+      <!--/* internal */-->
+      ~{},              <!--/* style */-->
+      ~{::script},      <!--/* script */-->
+      <!--/*--------------------------*/-->
+      ~{::.topmenu},    <!--/* upm */-->
+      ~{::.head },      <!--/* header */-->
+      ~{::.gnb},         <!--/* gnb */-->
+      ~{::main},        <!--/* main */-->
+      ~{::.foot},       <!--/* footer default*/-->
+      )}">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 후 화면</title>
+</head>
+<body>
+<div class="wrap">
+  <div id="tl"></div>
+  <div id="tc">
+    <div class="topmenu" th:insert="~{fragment/top::afterLoginTop}"/>
+  </div>
+  <div id="tr"></div>
+  <div id="banner">
+    <header class="head" th:insert="~{fragment/banner::global}"/>
+  </div>
+  <div id="gnb">
+    <nav class="gnb" th:insert="~{fragment/menu::global}"/>
+  </div>
+  <div id="content">
+    <main class="main">
+      본문 채우기
+    </main>
+  </div>
+  <div id="foot">
+    <footer class="foot" th:insert="~{fragment/footer::global}"/>
+  </div>
+</div>
+<script>
+  // 현재문서가 모두 로딩되면
+  document.addEventListener('DOMContentLoaded', init);
+
+  function init(){
+    const logout = document.getElementById('logout');
+    logout.addEventListener('click',evt=>{
+      evt.preventDefault();
+
+      if(confirm('로그아웃하시겠습니까?')){
+        f_logout2();
+      }
+    });
+  }
+
+  //방법1) javascript 폼요소 생성 후 commit
+  function f_logout(){
+    const frm = document.createElement('form');
+    frm.setAttribute('method','post');
+    frm.setAttribute('action','/logout');
+
+    document.body.appendChild(frm);
+    frm.submit();
+  }
+
+  //방법2) javascript로 비동기 방식 fetch 사용
+  async function f_logout2(){
+    try{
+      const res  = await fetch('/logout',{method:'POST',body:null});
+      const text = await res.text()
+
+      if(text === 'OK'){
+         location.href='/';
+      }
+    }catch(err) {
+      console.log(err);
+    }
+  }
+</script>
+</body>
+</html>

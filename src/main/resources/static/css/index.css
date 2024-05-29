@@ -1,3 +1,7 @@
+* { 
+  background-color: var(--color-beige);
+}
+
 /* 메인 */
 #main_sec {
   width: 100%;

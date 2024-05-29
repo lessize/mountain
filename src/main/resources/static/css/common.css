@@ -13,7 +13,7 @@
 
 * {
   -webkit-tap-highlight-color: transparent;
-  background-color: var(--color-beige);
+  /* background-color: var(--color-beige); */
   /* outline: 1px solid tomato; */
 }
 

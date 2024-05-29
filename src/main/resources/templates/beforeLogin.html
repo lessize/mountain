@@ -12,23 +12,27 @@
       ~{},              <!--/* script */-->
       <!--/*--------------------------*/-->
       ~{::.topmenu},    <!--/* upm */-->
-      ~{},      <!--/* header */-->
-      ~{},         <!--/* gnb */-->
-      ~{},        <!--/* main */-->
-      ~{},       <!--/* footer default*/-->
+      ~{::.head },      <!--/* header */-->
+      ~{::.gnb},         <!--/* gnb */-->
+      ~{::main},        <!--/* main */-->
+      ~{::.foot},       <!--/* footer default*/-->
       )}">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>제목 채우기</title>
+</head>
 <body>
-<!-- 로그인된 경우 -->
 <div class="wrap">
   <div id="tl"></div>
   <header id="tc">
-    <header class="topmenu" th:insert="~{fragment/header::beforeLoginHeader}"/>
-  </header>
+<!--    <header class="topmenu" th:insert="~{fragment/top::beforeLoginTop}"/>-->
+<!--    </header>-->
+  <div id="tr"></div>
+  <div id="banner">
+<!--    <header class="head" th:insert="~{fragment/banner::global}"/>-->
+  </div>
   <div id="gnb">
 <!--    <nav class="gnb" th:insert="~{fragment/menu::global}"/>-->
   </div>
@@ -38,31 +42,8 @@
     </main>
   </div>
   <div id="foot">
-<!--    <footer class="foot" th:insert="~{fragment/footer::global}"/>-->
+    <footer class="foot" th:insert="~{fragment/footer::footer}"/>
   </div>
 </div>
-
-<!-- Thymeleaf를 사용하여 세션 정보를 JavaScript 변수에 할당 -->
-<script th:inline="javascript">
-  /*<![CDATA[*/
-    var loginMember = /*[[${session.loginMember}]]*/ null;
-  /*]]>*/
-</script>
-
-<!-- 로그아웃 버튼 클릭 시 처리하는 JavaScript -->
-<script>
-  const $logout = document.getElementById('logout');
-  $logout.addEventListener('click', evt => {
-    evt.preventDefault();
-    fetch('members/logout', { method:'POST', body:null })
-      .then(res => res.text())
-      .then(res => {
-        if (res === 'OK') {
-          location.href = '/';
-        }
-      })
-      .catch(console.log);
-  });
-</script>
 </body>
 </html>
